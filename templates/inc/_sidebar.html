@@ -1,0 +1,12 @@
+{% load news_tags %}
+<div class="list-group">
+    {% get_categories as categories %}
+     {% for category in categories %}
+      <a href="{% url 'category' category.pk %}"
+         class="list-group-item list-group-item-action">
+          {{ category.title }}
+      </a>
+    {% endfor %}
+</div>
+
+{% show_categories 'На' 'главную'%}
