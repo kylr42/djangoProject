@@ -2,11 +2,11 @@
 <div class="list-group">
     {% get_categories as categories %}
      {% for category in categories %}
-      <a href="{% url 'category' category.pk %}"
+      <a href="{{ category.get_absolute_url }}"
          class="list-group-item list-group-item-action">
           {{ category.title }}
       </a>
     {% endfor %}
 </div>
 
-{% show_categories 'На' 'главную'%}
+{#{% show_categories 'На' 'главную'%}#}

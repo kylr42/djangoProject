@@ -13,7 +13,7 @@
         <div class="card text-center mb-3">
           <div class="card-header">
               {% if item.category %}
-                Категория: <a href="{% url 'category' item.category.pk %}">{{ item.category }}</a>
+                Категория: <a href="{{ item.category.get_absolute_url }}">{{ item.category }}</a>
               {% else %}
                 Категория: <a href="{% url 'home' %}">{{ item.category }}</a>
               {% endif %}
@@ -29,8 +29,8 @@
                 {% endif %}
                 <div class="media-body">
                     <h5 class="card-title">{{ item.title }}</h5>
-                    <p class="card-text">{{ item.content|safe|linebreaks }}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <p class="card-text">{{ item.content|safe|linebreaks|truncatewords:50 }}</p>
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Go somewhere</a>
                 </div>
               </div>
           </div>
