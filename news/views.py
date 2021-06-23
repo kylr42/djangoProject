@@ -11,7 +11,7 @@ def index(request):
 		'title': 'Список новостей',
 		'categories': categories,
 	}
-	return render(request, '../templates/news/index.html', context)
+	return render(request, 'news/index.html', context)
 
 
 def get_category(request, category_id):
@@ -23,4 +23,4 @@ def get_category(request, category_id):
 		'categories': categories,
 		'category': category,
 	}
-	return render(request, '../templates/news/category.html', context)
+	return render(request, 'news/category.html', context)
