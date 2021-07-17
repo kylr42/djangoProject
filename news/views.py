@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import News, Category
-
+from .forms import NewsForm
 
 def index(request):
 	news = News.objects.all()
@@ -25,3 +25,11 @@ def get_category(request, category_id):
 def get_news(request, news_id):
 	news_item = get_object_or_404(News, pk=news_id)
 	return render(request, 'news/get_news.html', {'news_item': news_item})
+
+
+def add_news(request):
+	if request.method == 'POST':
+		pass
+	else:
+		form = NewsForm
+	return render(request, 'news/add_news.html', {'form': form})
