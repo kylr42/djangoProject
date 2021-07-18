@@ -2,7 +2,7 @@
 WSGI config for djangoProject project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
-
+https://vk.com/@hacker_timcore-19-uyazvimost-sql-injection-stored-user-agent
 For more information on this file, see
 https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
 """
