@@ -17,8 +17,6 @@ from django.core.exceptions import ValidationError
 
 
 class NewsForm(forms.ModelForm):
-    category = forms.ModelChoiceField(empty_label=None, queryset=Category.objects.all(),
-                                      label='Категория')
 
     class Meta:
         model = News

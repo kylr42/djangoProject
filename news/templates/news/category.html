@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ category.title }} :: {{ block.super }}
+    {{ news.first.title }} :: {{ block.super }}
 {% endblock %}
 
 {% block sidebar %}
