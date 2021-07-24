@@ -1,5 +1,3 @@
-# from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .models import News, Category
@@ -38,13 +36,13 @@ class HomeNews(ListView):
 # 	return render(request, 'news/category.html', context)
 class NewsByCategory(ListView):
     model = News
-    template_name = 'news/home_news_list.html'
+    template_name = 'news/category.html'
     context_object_name = 'news'
     allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Category.objects.get(pk=self.kwargs['category_id'])
+        context['category'] = Category.objects.get(pk=self.kwargs['category_id'])
         return context
 
     def get_queryset(self):
