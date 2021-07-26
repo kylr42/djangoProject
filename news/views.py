@@ -1,6 +1,8 @@
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import News, Category
+from .models import News
 from .forms import NewsForm
 
 
@@ -66,7 +68,9 @@ class ViewNews(DetailView):
 # 	else:
 # 		form = NewsForm()
 # 	return render(request, 'news/add_news.html', {'form': form})
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/news_create.html'
     # success_url = reverse_lazy('home')
+    login_url = '/admin/'
+    # raise_exception = True

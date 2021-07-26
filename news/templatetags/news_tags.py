@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.simple_tag()
 def get_categories():
-	cats = Category.objects.annotate(cnt=Count('news'))
+	cats = Category.objects.filter(news__is_published=True).annotate(cnt=Count('news'))
 	return cats.filter(cnt__gt=0)
 
 
