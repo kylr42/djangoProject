@@ -1,4 +1,5 @@
 from django import template
+from django.core.cache import cache
 from django.db.models import Count
 
 from news.models import Category
@@ -8,7 +9,10 @@ register = template.Library()
 
 @register.simple_tag()
 def get_categories():
-	cats = Category.objects.filter(news__is_published=True).annotate(cnt=Count('news'))
+	cats = cache.get('categories')
+	if not cats:
+		cats = Category.objects.filter(news__is_published=True).annotate(cnt=Count('news'))
+		cache.set('categories', 60)
 	return cats.filter(cnt__gt=0)
 
 

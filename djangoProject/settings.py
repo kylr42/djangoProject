@@ -144,5 +144,12 @@ EMAIL_USE_SSL = True
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
-CAPTCHA_IMAGE_SIZE = (100, 50, )
+CAPTCHA_IMAGE_SIZE = (100, 50,)
 CAPTCHA_FONT_SIZE = 33
+
+CACHES = {
+	'default': {
+		'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+		'LOCATION': os.path.join(BASE_DIR, 'cache'),
+	}
+}
