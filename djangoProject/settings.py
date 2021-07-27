@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'debug_toolbar',
+	'captcha',
 	'ckeditor',
 	'ckeditor_uploader',
 
@@ -142,3 +143,6 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CAPTCHA_IMAGE_SIZE = (100, 50, )
+CAPTCHA_FONT_SIZE = 33
