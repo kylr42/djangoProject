@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 # from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -6,7 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 
 from .models import News
-from .forms import NewsForm, UserRegisterForm, UserLoginForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
 
 
 def register(request):
@@ -46,6 +47,24 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['message'],
+                  'test@gmail.com', ['test@student.21-school.ru'])
+            if mail:
+                messages.success(request, 'Письмо отправлено!')
+                return redirect('home')
+            else:
+                messages.error(request, 'Ошибка отправки')
+        else:
+            messages.error(request, 'Ошибка валидации')
+    else:
+        form = ContactForm()
+    return render(request, 'news/contact.html', {'form': form})
 
 
 # def index(request):

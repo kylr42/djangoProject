@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+from .admin import NewsAdminForm
 from .models import News
 
 
@@ -62,4 +63,14 @@ class UserLoginForm(AuthenticationForm):
 	)
 	password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
 		attrs={"class": "form-control"}
+	))
+
+
+class ContactForm(forms.Form):
+	subject = forms.CharField(
+		label='Тема',
+		widget=forms.TextInput(attrs={"class": "form-control"}),
+	)
+	message = forms.CharField(label='Текст', widget=forms.Textarea(
+		attrs={"class": "form-control", "rows": 10}
 	))
