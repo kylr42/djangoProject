@@ -2,6 +2,10 @@ from django.urls import path
 from news.views import *
 
 urlpatterns = [
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('register/', register, name='register'),
+
     # path('', index, name='home'),
     path('', HomeNews.as_view(), name='home'),
     path('news/<int:news_id>/', ViewNews.as_view(), name='news'),
