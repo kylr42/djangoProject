@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Изменение профиля :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <h1>Редактирование профиля</h1>
+    <p>Вы можете редактировать свою учетную запись, используя следующую форму:</p>
+    <form method="post" enctype="multipart/form-data">
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-block">
+            Зарегистрироваться
+        </button>
+    </form>
+{% endblock %}
