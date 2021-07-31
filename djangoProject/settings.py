@@ -141,8 +141,8 @@ INTERNAL_IPS = ['127.0.0.1', ]
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'jimbosiona@gmail.com'
-EMAIL_HOST_PASSWORD = 'Asel.Jetigen0208'
+EMAIL_HOST_USER = os.environ.get('EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
