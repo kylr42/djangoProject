@@ -35,13 +35,14 @@ class News(models.Model):
 
 
 class Comment(models.Model):
-    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
-    body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(default=True)
+    news = models.ForeignKey(News, on_delete=models.CASCADE,
+            related_name='comments', verbose_name='Новость')
+    name = models.CharField(max_length=80, verbose_name='Имя пользователя')
+    email = models.EmailField(verbose_name='Почта')
+    body = models.TextField(verbose_name='Комментарий')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    status = models.BooleanField(default=True, verbose_name='Статус')
 
     class Meta:
         verbose_name = 'Комментарий'
@@ -49,7 +50,7 @@ class Comment(models.Model):
         ordering = ('created',)
 
     def __str__(self):
-        return f'Комментарий от {self.name}'
+        return f'Комментарий от {self.name} под {self.news}'
 
 
 class Category(models.Model):

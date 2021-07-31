@@ -72,9 +72,9 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('name', 'email', 'body')
         widgets = {
-            'name': forms.TextInput(attrs={"class": "form-input"}),
-            'email': forms.EmailInput(attrs={"class": "form-input"}),
-            'body': forms.Textarea(attrs={"class": "form-input"}),
+            'name': forms.TextInput(attrs={"class": "form-input", "placeholder": "Ваше имя"}),
+            'email': forms.EmailInput(attrs={"class": "form-input", "placeholder": "Ваша почта"}),
+            'body': forms.Textarea(attrs={"class": "form-input", "placeholder": "Комментарий..."}),
         }
 
 
