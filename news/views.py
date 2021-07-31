@@ -1,47 +1,17 @@
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login, logout
 from django.contrib import messages
 
 from .models import News
-from .forms import NewsForm, UserRegisterForm, UserLoginForm, EmailPostForm, CommentForm
+from .forms import NewsForm, EmailPostForm, CommentForm
 
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Вы успешно зарегистрировались!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Ошибка регистрации')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'news/register.html', {'form': form})
-
-
-def user_login(request):
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, 'Вы успешно авторизовались!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Ошибка авторизации')
-    else:
-        form = UserLoginForm()
-    return render(request, 'news/login.html', {"form": form})
-
-
-def user_logout(request):
-    logout(request)
-    return redirect('login')
+class CreateNews(LoginRequiredMixin, CreateView):
+    form_class = NewsForm
+    template_name = 'news/news_create.html'
+    login_url = '/admin/'
 
 
 class HomeNews(ListView):
@@ -68,12 +38,6 @@ class NewsByCategory(ListView):
         return News.published.filter(
             category__slug=self.kwargs['slug']
         ).select_related('category')
-
-
-class CreateNews(LoginRequiredMixin, CreateView):
-    form_class = NewsForm
-    template_name = 'news/news_create.html'
-    login_url = '/admin/'
 
 
 def news_share(request, slug):

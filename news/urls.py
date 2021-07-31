@@ -3,11 +3,6 @@ from django.urls import path
 from news.views import *
 
 urlpatterns = [
-    path('login/', user_login, name='login'),
-    path('logout/', user_logout, name='logout'),
-    path('register/', register, name='register'),
-
-
     path('', HomeNews.as_view(), name='home'),
     path('news/add_news/', CreateNews.as_view(), name='add_news'),
     path('news/share/<slug:slug>/', news_share, name='share_news'),

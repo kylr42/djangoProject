@@ -35,13 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
+    'taggit',
     'captcha',
     'ckeditor',
-    'taggit',
+    'debug_toolbar',
     'ckeditor_uploader',
 
     'news.apps.NewsConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,8 @@ INTERNAL_IPS = ['127.0.0.1', ]
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
+EMAIL_HOST_USER = 'jimbosiona@gmail.com'
+EMAIL_HOST_PASSWORD = 'Asel.Jetigen0208'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 

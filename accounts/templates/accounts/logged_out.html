@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Change your password
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>Выход из аккаунта!</h1>
+        <p class="lead">Вы успешно вышли из системы. Вы можете войти <a href="{% url "login" %}">снова</a>.</p>
+    </div>
+{% endblock %}
+
