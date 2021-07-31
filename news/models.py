@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
-        return super(PublishedManager, self).\
+        return super(PublishedManager, self). \
             get_queryset().filter(is_published=True)
 
 
@@ -20,7 +20,6 @@ class News(models.Model):
     photo = models.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Фото', blank=True)
     is_published = models.BooleanField(default=True, verbose_name='Опубликовано')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория')
-    tags = models.ManyToManyField('Tag', related_name='posts', blank=True, verbose_name='Тег')
     views = models.IntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
@@ -33,6 +32,24 @@ class News(models.Model):
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'
         ordering = ['-created_at']
+
+
+class Comment(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('created',)
+
+    def __str__(self):
+        return f'Комментарий от {self.name}'
 
 
 class Category(models.Model):
@@ -49,19 +66,3 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ['title']
-
-
-class Tag(models.Model):
-    title = models.CharField(max_length=50, db_index=True, verbose_name='Тег')
-    slug = models.SlugField(unique=True, verbose_name='Url')
-
-    class Meta:
-        verbose_name = 'Тег'
-        verbose_name_plural = 'Теги'
-        ordering = ['title']
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse('tag', kwargs={'slug': self.slug})

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Отправка поста на письмо :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Отправка поста на письмо</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-block">
+                    Отправить
+                </button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

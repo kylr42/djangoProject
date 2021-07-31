@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="be-comment-block">
+        <h1 class="comments-title">Comments ({{ comments.count }})</h1>
+
+        {% for comment in comments %}
+            <div class="be-comment">
+                <div class="be-img-comment">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar{{ forloop.counter }}.png" alt=""
+                         class="be-ava-comment">
+                </div>
+
+                <div class="be-comment-content">
+				<span class="be-comment-name">
+					<a href="blog-detail-2.html">{{ comment.name }}</a>
+					</span>
+                    <span class="be-comment-time">
+					<i class="fa fa-clock-o"></i>
+					{{ comment.updated }}
+				</span>
+                    <p class="be-comment-text">{{ comment.body }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>Комментарии отсутствуют!</p>
+        {% endfor %}
+
+        {% if new_comment %}
+            <h3 class="text-success">Вы добавили новый комментарий.</h3>
+        {% else %}
+
+            <form method="post" class="form-block">
+                <div class="row">
+
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        {{ field.class }}
+
+                        {% if forloop.counter == 3 %}
+                            <div class="col-12">
+                                <div class="form-group">
+                        {% else %}
+                            <div class="col-xs-12  col-sm-6">
+                                <div class="form-group fl_icon">
+                                <div class="icon"><i class="fa fa-user"></i></div>
+                        {% endif %}
+
+                                {{ field }}
+                                <div class="col-12 ">
+                                    {{ field.errors }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% csrf_token %}
+                    </div>
+                    <input class="btn btn-primary float-right" type="submit" value="Добавить комментарий">
+            </form>
+
+        {% endif %}
+    </div>
+</div>

@@ -1,12 +1,12 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.contrib import messages
 
 from .models import News
-from .forms import NewsForm, UserRegisterForm, UserLoginForm, EmailPostForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, EmailPostForm, CommentForm
 
 
 def register(request):
@@ -66,8 +66,20 @@ class NewsByCategory(ListView):
 
     def get_queryset(self):
         return News.published.filter(
-            slug=self.kwargs['slug']
+            category__slug=self.kwargs['slug']
         ).select_related('category')
+
+
+# class DetailNews(DetailView):
+#     model = News
+#     pk_url_kwarg = 'slug'
+#     template_name = 'news/news_detail.html'
+#     context_object_name = 'news_item'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(DetailNews, self).get_context_data(**kwargs)
+#         context['form'] = MyFormClass
+#         return context
 
 
 class CreateNews(LoginRequiredMixin, CreateView):
@@ -78,7 +90,7 @@ class CreateNews(LoginRequiredMixin, CreateView):
     # raise_exception = True
 
 
-def news_detail(request, slug):
+def news_share(request, slug):
     news_item = get_object_or_404(News, slug=slug)
     if request.method == 'POST':
         form = EmailPostForm(request.POST)
@@ -99,4 +111,25 @@ def news_detail(request, slug):
             messages.error(request, 'Ошибка валидации')
     else:
         form = EmailPostForm()
-    return render(request, 'news/news_detail.html', {'form': form, 'news_item': news_item})
+    return render(request, 'news/news_share.html', {'form': form})
+
+
+def news_detail(request, slug):
+    news_item = get_object_or_404(News, slug=slug)
+    comments = news_item.comments.filter(status=True)
+    new_comment = None
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.news = news_item
+            new_comment.save()
+        else:
+            messages.error(request, 'Ошибка валидации')
+    else:
+        form = CommentForm()
+    context = {
+        'form': form, 'news_item': news_item,
+        'comments': comments, 'new_comment': new_comment,
+    }
+    return render(request, 'news/news_detail.html', context=context)

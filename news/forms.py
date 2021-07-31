@@ -6,8 +6,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from .admin import NewsAdminForm
-from .models import News
+from .models import News, Comment
 
 
 # class NewsForm(forms.Form):
@@ -22,13 +21,12 @@ from .models import News
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ['title', 'author', 'category', 'tags', 'content', 'is_published',]
+        fields = ['title', 'author', 'category', 'content', 'is_published', ]
         widgets = {
             'title': forms.TextInput(attrs={"class": "form-control"}),
             'author': forms.TextInput(attrs={"class": "form-control"}),
             'content': forms.Textarea(attrs={"class": "form-control"}),
             'category': forms.Select(attrs={"class": "form-control"}),
-            'tags': forms.CheckboxSelectMultiple(attrs={"class": "btn btn-primary"}),
         }
 
     def clean_title(self):
@@ -67,6 +65,17 @@ class UserLoginForm(AuthenticationForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
         attrs={"class": "form-control"}
     ))
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('name', 'email', 'body')
+        widgets = {
+            'name': forms.TextInput(attrs={"class": "form-input"}),
+            'email': forms.EmailInput(attrs={"class": "form-input"}),
+            'body': forms.Textarea(attrs={"class": "form-input"}),
+        }
 
 
 class EmailPostForm(forms.Form):

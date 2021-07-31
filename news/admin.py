@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-from .models import News, Category, Tag
+from .models import News, Category, Comment
 
 
 class NewsAdminForm(forms.ModelForm):
@@ -39,11 +39,17 @@ class NewsAdmin(admin.ModelAdmin):
     get_photo.short_description = 'Фото'
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'news', 'created', 'status')
+    list_filter = ('status', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')
+
+
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', )
-    list_display_links = ('id', 'title', )
+    list_display = ('id', 'title', 'slug',)
+    list_display_links = ('id', 'title',)
     search_fields = ('title',)
-    prepopulated_fields = {'slug': ('title', )}
+    prepopulated_fields = {'slug': ('title',)}
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -52,8 +58,8 @@ class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
-admin.site.register(Tag, TagAdmin)
 admin.site.register(News, NewsAdmin)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category, CategoryAdmin)
 
 admin.site.site_title = 'Управление новостями'
