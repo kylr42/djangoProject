@@ -36,4 +36,20 @@
             {{ news_item.created_at|date:"Y:m:d h:i:s" }}
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Обратная связь</h2>
+        </div>
+        <div class="card-body">
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-block">
+                    Отправить
+                </button>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}

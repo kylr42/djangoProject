@@ -9,10 +9,7 @@ register = template.Library()
 
 @register.simple_tag()
 def get_categories():
-	cats = cache.get('categories')
-	if not cats:
-		cats = Category.objects.filter(news__is_published=True).annotate(cnt=Count('news'))
-		cache.set('categories', 60)
+	cats = Category.objects.filter(news__is_published=True).annotate(cnt=Count('news'))
 	return cats.filter(cnt__gt=0)
 
 

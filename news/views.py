@@ -1,13 +1,12 @@
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
-# from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.contrib import messages
 
 from .models import News
-from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, EmailPostForm
 
 
 def register(request):
@@ -23,10 +22,6 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'news/register.html', {'form': form})
-# class UserRegister(CreateView):
-#     form_class = UserRegisterForm
-#     template_name = 'news/register.html'
-#     success_url = reverse_lazy('login')
 
 
 def user_login(request):
@@ -49,31 +44,6 @@ def user_logout(request):
     return redirect('login')
 
 
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['message'],
-                  'test@gmail.com', ['test@student.21-school.ru'])
-            if mail:
-                messages.success(request, 'Письмо отправлено!')
-                return redirect('home')
-            else:
-                messages.error(request, 'Ошибка отправки')
-        else:
-            messages.error(request, 'Ошибка валидации')
-    else:
-        form = ContactForm()
-    return render(request, 'news/contact.html', {'form': form})
-
-
-# def index(request):
-# 	news = News.objects.all()
-# 	context = {
-# 		'news': news,
-# 		'title': 'Список новостей',
-# 	}
-# 	return render(request, 'news/index.html', context)
 class HomeNews(ListView):
     model = News
     template_name = 'news/home_news_list.html'
@@ -83,14 +53,6 @@ class HomeNews(ListView):
     queryset = News.objects.filter(is_published=True).select_related('category')
 
 
-# def get_category(request, category_id):
-# 	news = News.objects.filter(category_id=category_id)
-# 	category = get_object_or_404(Category, pk=category_id)
-# 	context = {
-# 		'news': news,
-# 		'category': category,
-# 	}
-# 	return render(request, 'news/category.html', context)
 class NewsByCategory(ListView):
     model = News
     template_name = 'news/category.html'
@@ -103,37 +65,37 @@ class NewsByCategory(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(
-            is_published=True,
-            category_id=self.kwargs['category_id']
+        return News.published.filter(
+            slug=self.kwargs['slug']
         ).select_related('category')
 
 
-# def get_news(request, news_id):
-# 	news_item = get_object_or_404(News, pk=news_id)
-# 	return render(request, 'news/get_news.html', {'news_item': news_item})
-class ViewNews(DetailView):
-    model = News
-    pk_url_kwarg = 'news_id'
-    template_name = 'news/news_detail.html'
-    context_object_name = 'news_item'
-
-
-# def add_news(request):
-# 	if request.method == 'POST':
-# 		form = NewsForm(request.POST)
-# 		if form.is_valid():
-# 			# var = form.cleaned_data
-# 			# var = News.objects.create(**form.cleaned_data)
-# 			# return redirect('news', var.pk)
-# 			news = form.save()
-# 			return redirect(news)
-# 	else:
-# 		form = NewsForm()
-# 	return render(request, 'news/add_news.html', {'form': form})
 class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/news_create.html'
     # success_url = reverse_lazy('home')
     login_url = '/admin/'
     # raise_exception = True
+
+
+def news_detail(request, slug):
+    news_item = get_object_or_404(News, slug=slug)
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            try:
+                cd = form.cleaned_data
+                news_url = request.build_absolute_uri(news_item.get_absolute_url())
+                subject = f"{cd['name']} recommends you read {news_item.title}"
+                message = f"Read {news_item.title} at {news_url}\n\n" \
+                          f"{cd['name']}\'s comments: {cd['comments']}"
+                send_mail(subject, message, 'admin@myblog.com',
+                          [cd['to']])
+                messages.success(request, 'Письмо отправлено!')
+            except Exception as e:
+                messages.error(request, f'Ошибка отправки - {e}')
+        else:
+            messages.error(request, 'Ошибка валидации')
+    else:
+        form = EmailPostForm()
+    return render(request, 'news/news_detail.html', {'form': form, 'news_item': news_item})
