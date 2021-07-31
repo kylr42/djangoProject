@@ -86,12 +86,13 @@ def news_detail(request, slug):
             try:
                 cd = form.cleaned_data
                 news_url = request.build_absolute_uri(news_item.get_absolute_url())
-                subject = f"{cd['name']} recommends you read {news_item.title}"
+                subject = f"{news_item.title}"
                 message = f"Read {news_item.title} at {news_url}\n\n" \
-                          f"{cd['name']}\'s comments: {cd['comments']}"
+                          f"comments: {cd['message']}"
                 send_mail(subject, message, 'admin@myblog.com',
                           [cd['to']])
                 messages.success(request, 'Письмо отправлено!')
+                form = EmailPostForm()
             except Exception as e:
                 messages.error(request, f'Ошибка отправки - {e}')
         else:
