@@ -24,7 +24,9 @@ SECRET_KEY = 'django-insecure-d*$&a+t3w#u(nt*urj=s$g&!y)kun9#1#1rqzn1nc^kj(=mhs^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost', '127.0.0.1',
+]
 
 # Application definition
 
@@ -38,8 +40,10 @@ INSTALLED_APPS = [
     'taggit',
     'captcha',
     'ckeditor',
+    'social_django',
     'debug_toolbar',
     'ckeditor_uploader',
+    'django_extensions',
 
     'news.apps.NewsConfig',
     'accounts.apps.AccountsConfig',
@@ -157,3 +161,7 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache'),
     }
 }
+
+AUTHENTICATION_BACKENDS = ['social_core.backends.google.GoogleOAuth2', ]
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')

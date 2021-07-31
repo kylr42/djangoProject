@@ -24,6 +24,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('captcha/', include('captcha.urls')),
+    path('social-auth/', include('social_django.urls', namespace='social')),
     path('', include('news.urls')),
 
 ]
