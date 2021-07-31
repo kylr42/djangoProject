@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView, DetailView, FormView
+from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.contrib import messages
@@ -70,24 +70,10 @@ class NewsByCategory(ListView):
         ).select_related('category')
 
 
-# class DetailNews(DetailView):
-#     model = News
-#     pk_url_kwarg = 'slug'
-#     template_name = 'news/news_detail.html'
-#     context_object_name = 'news_item'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(DetailNews, self).get_context_data(**kwargs)
-#         context['form'] = MyFormClass
-#         return context
-
-
 class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/news_create.html'
-    # success_url = reverse_lazy('home')
     login_url = '/admin/'
-    # raise_exception = True
 
 
 def news_share(request, slug):
