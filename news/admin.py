@@ -25,7 +25,7 @@ class NewsAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('is_published', 'category',)
     fields = (
-        'title', 'author', 'category', 'tags', 'content', 'slug', 'photo', 'get_photo',
+        'title', 'author', 'category', 'content', 'slug', 'photo', 'get_photo',
         'is_published', 'views', 'created_at', 'updated_at',
     )
     prepopulated_fields = {'slug': ('title',)}
