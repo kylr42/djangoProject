@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 
 class PublishedManager(models.Manager):
@@ -11,6 +12,7 @@ class PublishedManager(models.Manager):
 class News(models.Model):
     objects = models.Manager()
     published = PublishedManager()
+    tags = TaggableManager()
     title = models.CharField(max_length=150, verbose_name='Наименование')
     slug = models.SlugField(max_length=200, unique=True, verbose_name='Url')
     author = models.CharField(max_length=200, verbose_name='Автор')

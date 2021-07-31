@@ -16,6 +16,8 @@
             {% else %}
                 Категория: <a href="{% url 'home' %}">{{ news_item.category }}</a>
             {% endif %}
+            <br>
+            Теги: {{ news_item.tags.all|join:", " }}
         </div>
         <div class="card-body">
             {% if news_item.photo %}

@@ -21,11 +21,11 @@ class NewsAdmin(admin.ModelAdmin):
         'updated_at', 'is_published', 'get_photo',
     )
     list_display_links = ('id', 'title',)
-    search_fields = ('title', 'content',)
+    search_fields = ('title', 'content', 'tags',)
     list_editable = ('is_published',)
-    list_filter = ('is_published', 'category',)
+    list_filter = ('is_published', 'category', 'tags',)
     fields = (
-        'title', 'author', 'category', 'content', 'slug', 'photo', 'get_photo',
+        'title', 'author', 'category', 'tags', 'content', 'slug', 'photo', 'get_photo',
         'is_published', 'views', 'created_at', 'updated_at',
     )
     prepopulated_fields = {'slug': ('title',)}
@@ -35,7 +35,6 @@ class NewsAdmin(admin.ModelAdmin):
         if obj.photo:
             return mark_safe(f'<img src="{obj.photo.url}" width="75px">')
         return 'Отсутствует'
-
     get_photo.short_description = 'Фото'
 
 
@@ -49,12 +48,6 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'slug',)
     list_display_links = ('id', 'title',)
     search_fields = ('title',)
-    prepopulated_fields = {'slug': ('title',)}
-
-
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug')
-    list_display_links = ('id', 'title',)
     prepopulated_fields = {'slug': ('title',)}
 
 
