@@ -1,59 +1,41 @@
-from django.contrib.auth.views import *
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
 from django.contrib import messages
+from django.contrib.auth import login, views
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
 from .forms import *
 
 
-def user_logout(request):
-    logout(request)
-    return render(request, 'accounts/logged_out.html')
-
-
-def user_register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Вы успешно зарегистрировались!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Ошибка регистрации')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'accounts/register.html', {'form': form})
-
-
-def user_login(request):
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, 'Вы успешно авторизовались!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Ошибка авторизации')
-    else:
-        form = UserLoginForm()
-    return render(request, 'accounts/login.html', {"form": form})
-
-
-class ChangePassword(PasswordChangeView):
+class ChangePassword(views.PasswordChangeView):
     form_class = UserPasswordChangeForm
-    template_name = 'accounts/password_change_form.html'
+    template_name = 'registration/password_change_form.html'
 
 
-class ResetPassword(PasswordResetView):
+class ResetPassword(views.PasswordResetView):
     form_class = UserPasswordResetForm
-    template_name = 'accounts/password_reset_form.html'
+    template_name = 'registration/password_reset_form.html'
 
 
-class ResetPasswordConfirm(PasswordResetConfirmView):
+class ResetPasswordConfirm(views.PasswordResetConfirmView):
     form_class = UserPasswordConfirmForm
-    template_name = 'accounts/password_reset_confirm.html'
+    template_name = 'registration/password_reset_confirm.html'
+
+
+class RegisterView(views.FormView):
+    form_class = UserRegisterForm
+    template_name = 'registration/register.html'
+    success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/')
+        else:
+            return super(RegisterView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super(RegisterView, self).form_valid(form)
 
 
 @login_required
@@ -62,9 +44,9 @@ def edit(request):
         user_form = UserEditForm(instance=request.user,
                                  data=request.POST)
         profile_form = ProfileEditForm(
-                                instance=request.user.profile,
-                                data=request.POST,
-                                files=request.FILES)
+            instance=request.user.profile,
+            data=request.POST,
+            files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -74,6 +56,6 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request,
-                  'accounts/edit.html',
+                  'registration/edit.html',
                   {'user_form': user_form,
                    'profile_form': profile_form})
