@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    Добавление новости :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <h1>Добавление новости</h1>
+    <form action="{% url 'add_news' %}" method="post">
+
+        <div class="row">
+            <div class="col-6">
+                {{ form.title|as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.author|as_crispy_field }}
+            </div>
+        </div>
+
+        {{ form.category|as_crispy_field }}
+        {{ form.content|as_crispy_field }}
+
+        <div class="row">
+            <div class="col-6">
+                {{ form.photo }}
+            </div>
+            <div class="col-6">
+                {{ form.is_published|as_crispy_field }}
+            </div>
+        </div>
+
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-primary btn-block">
+            Добавить новость
+        </button>
+    </form>
+{% endblock %}

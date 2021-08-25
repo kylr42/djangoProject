@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'taggit',
     'captcha',
     'ckeditor',
+    'crispy_forms',
     'social_django',
     'debug_toolbar',
     'ckeditor_uploader',
@@ -166,9 +167,13 @@ CACHES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = ['social_core.backends.google.GoogleOAuth2', 'django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/'

@@ -22,15 +22,15 @@
         </div>
 
         <div class="col-md-9">
-        {% if messages %}
+            {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == 'error' %}
-                         <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger" role="alert">
                             {{ message }}
                         </div>
                     {% else %}
                         <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message}}
+                            {{ message }}
                         </div>
                     {% endif %}
                 {% endfor %}

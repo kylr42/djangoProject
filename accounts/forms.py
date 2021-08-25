@@ -19,7 +19,6 @@ class UserRegisterForm(UserCreationForm):
     username = forms.CharField(
         label='Имя пользователя',
         widget=forms.TextInput(attrs={"class": "form-control"}),
-        help_text='Имя пользователя должно состоять максимум из 150 символов.'
     )
     password1 = forms.CharField(
         label='Пароль',

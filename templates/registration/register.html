@@ -8,20 +8,36 @@
     {% include 'inc/_sidebar.html' %}
 {% endblock %}
 
+{% load crispy_forms_filters %}
+
 {% block content %}
     <h1>Регистрация</h1>
 
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        <div class="row">
+            <div class="col-6">
+                {{ form.username|as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.email|as_crispy_field }}
+            </div>
+        </div>
+        {{ form.password1|as_crispy_field }}
+        {{ form.password2|as_crispy_field }}
         <button type="submit" class="btn btn-primary btn-block">
             Зарегистрироваться
         </button>
     </form>
-    <ul>
-        <li class="google">
-            <a href="{% url "social:begin" "google-oauth2" %}">Login with Google</a>
-        </li>
-    </ul>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-google btn-block btn-outline"
+               href="{% url "social:begin" "google-oauth2" %}">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="google-logo">
+                Register with Google
+            </a>
+        </div>
+    </div>
 {% endblock %}

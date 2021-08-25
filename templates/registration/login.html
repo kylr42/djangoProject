@@ -8,20 +8,26 @@
     {% include 'inc/_sidebar.html' %}
 {% endblock %}
 
+{% load crispy_forms_filters %}
 {% block content %}
     <h1>Авторизация</h1>
 
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        {{ form|crispy }}
         <button type="submit" class="btn btn-primary btn-block">
             Авторизоваться
         </button>
     </form>
-    <ul>
-        <li class="google">
-            <a href="{% url "social:begin" "google-oauth2" %}">Login with Google</a>
-        </li>
-    </ul>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-google btn-block btn-outline"
+               href="{% url "social:begin" "google-oauth2" %}">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="google-logo">
+                Login with Google
+            </a>
+        </div>
+    </div>
 {% endblock %}

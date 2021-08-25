@@ -10,7 +10,7 @@ from .models import News, Comment
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ['title', 'author', 'category', 'content', 'is_published', ]
+        fields = ['title', 'author', 'category', 'content', 'photo', 'is_published', ]
         widgets = {
             'title': forms.TextInput(attrs={"class": "form-control"}),
             'author': forms.TextInput(attrs={"class": "form-control"}),
