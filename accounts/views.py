@@ -34,6 +34,7 @@ class RegisterView(views.FormView):
 
     def form_valid(self, form):
         user = form.save()
+        profile = Profile.objects.create(user=user)
         login(self.request, user)
         return super(RegisterView, self).form_valid(form)
 

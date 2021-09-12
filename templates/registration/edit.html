@@ -8,12 +8,13 @@
     {% include 'inc/_sidebar.html' %}
 {% endblock %}
 
+{% load crispy_forms_filters %}
 {% block content %}
     <h1>Редактирование профиля</h1>
     <p>Вы можете редактировать свою учетную запись, используя следующую форму:</p>
     <form method="post" enctype="multipart/form-data">
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
+        {{ user_form|crispy }}
+        {{ profile_form|crispy }}
         {% csrf_token %}
         <button type="submit" class="btn btn-primary btn-block">
             Зарегистрироваться

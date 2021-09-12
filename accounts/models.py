@@ -7,8 +7,7 @@ class Profile(models.Model):
             verbose_name='Пользователь')
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,
             verbose_name='Фото')
-    date_of_birth = models.DateField(blank=True, null=True,
-            verbose_name='Дата рождения')
+    date_of_birth = models.DateField(blank=True, verbose_name='Дата рождения')
 
     def __str__(self):
         return f'Профиль пользователя {self.user.username}'
